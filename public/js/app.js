@@ -16451,7 +16451,7 @@ var _hoisted_4 = {
   "class": ""
 };
 var _hoisted_5 = {
-  "class": "card-footer p-2"
+  "class": "card-footer p-2 d-flex justify-content-between align-items-center"
 };
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("strong", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
@@ -16469,6 +16469,16 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ME GUSTA ");
 
 var _hoisted_9 = {
+  "class": "mr-2 text-secondary"
+};
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "far fa-thumbs-up"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_11 = {
   dusk: "likes-count"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -16513,9 +16523,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "btn btn-link btn-sm"
     }, [_hoisted_7, _hoisted_8], 8
     /* PROPS */
-    , ["onClick"])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(status.likes_count), 1
+    , ["onClick"])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(status.likes_count), 1
     /* TEXT */
-    )])]);
+    )])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))]);

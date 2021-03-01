@@ -14,11 +14,9 @@ class CreateStatusTest extends TestCase
     /** @test */
     public function guests_users_can_not_create_statuses()
     {
-
-
-        $respose = $this->post(route('statuses.store'), ['body' => 'My first status']);
+        $respose = $this->postJson(route('statuses.store'), ['body' => 'My first status']);
         //dd($respose->content());
-        $respose->assertRedirect('login');
+        $respose->assertStatus(401);
     }
 
     public function test_a_user_can_create_statuses()
