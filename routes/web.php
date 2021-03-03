@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentLikesController;
 
 Route::resource('statuses',StatusController::class);
 
@@ -16,7 +17,9 @@ Route::delete('statuses/{status}/likes',[LikeController::class,'destroy'])->name
 Route::post('statuses/{status}/comments',[CommentController::class,'store'])->name('statuses.comments.store')->middleware('auth');
 
 
-
+/** COMMENTS LIKES ROUTES */
+Route::post('comments/{comment}/likes',[CommentLikesController::class,'store'])->name('comments.likes.store')->middleware('auth');
+Route::delete('comments/{comment}/likes',[CommentLikesController::class,'destroy'])->name('comments.likes.destroy')->middleware('auth');
 
 //Route::resource('likes',LikeController::class);
 

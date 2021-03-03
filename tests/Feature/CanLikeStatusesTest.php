@@ -12,51 +12,37 @@ class CanLikeStatusesTest extends TestCase
 {
     use RefreshDatabase;
 
-      /** @test */
-      public function guests_users_can_not_like_statuses()
-      {
-         $status=Status::factory()->create();
+    /** @test */
+    public function guests_users_can_not_like_statuses()
+    {
 
-          $respose = $this->postJson(route('statuses.like.store',$status));
-          //dd($respose->content());
-          $respose->assertStatus(401);
-      }
+        $status = Status::factory()->create();
+
+        $respose = $this->postJson(route('statuses.like.store', $status));
+        //dd($respose->content());
+        $respose->assertStatus(401);
+    }
 
     /**
      * @test
      */
-    public function an_authenticated_user_can_like_statuses()
+    public function an_authenticated_user_can_like_and_unlike_statuses()
     {
-        $this->withoutExceptionHandling();
 
-        $user=User::factory()->create();
-        $status=Status::factory()->create();
-        
-        $this->actingAs($user)->postJson(route('statuses.like.store',$status));
-      
-        $this->assertDatabaseHas('likes',[
-            'user_id'=>$user->id,
-            'status_id'=>$status->id,
-        ]);
+        $user = User::factory()->create();
+        $status = Status::factory()->create();
+
+        $this->assertCount(0, $status->likes);
+        $this->actingAs($user)->postJson(route('statuses.like.store', $status));
+        $this->assertCount(1, $status->fresh()->likes);
+
+        $this->assertDatabaseHas('likes', ['user_id' => $user->id]);
+
+        $this->actingAs($user)->deleteJson(route('statuses.like.destroy', $status));
+        $this->assertCount(0, $status->fresh()->likes);
+
+        $this->assertDatabaseMissing('likes', ['user_id' => $user->id]);
 
     }
 
-    /** @test */
-    public function an_authenticated_user_can_unlike_statuses()
-    {
-        $this->withoutExceptionHandling();
-
-        $user=User::factory()->create();
-        $status=Status::factory()->create();
-        $this->actingAs($user)->postJson(route('statuses.like.store',$status));
-      
-        $this->actingAs($user)->deleteJson(route('statuses.like.destroy',$status));
-
-
-        $this->assertDatabaseMissing('likes',[
-            'user_id'=>$user->id,
-            'status_id'=>$status->id,
-        ]);
-
-    }
 }

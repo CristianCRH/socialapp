@@ -10,7 +10,7 @@ const  app = createApp({
 })
 app.config.globalProperties.emitter = emitter
 app.component('status-form', require('./components/StatusForm.vue').default);
-app.component('statuses-list', require('./components/StatusesList.vue').default);
+app.component('status-list', require('./components/StatusList.vue').default);
 
 app.mixin(auth)
 

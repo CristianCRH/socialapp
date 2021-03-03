@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Status;
 use App\Models\Comment;
+use App\Models\Like;
 use Illuminate\Http\Request;
-use App\Http\Resources\CommentResource;
 
-class CommentController extends Controller
+class CommentLikesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,29 +24,27 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Status $status)
+    public function store(Comment $comment)
     {
 
-        request()->validate([
-            'body'=>'required'
+        $comment->likes()->create([
+            'user_id' => auth()->id()
         ]);
 
-      $comment= Comment::create([
+        /* == Like::create([
            'user_id'=>auth()->id(),
-           'status_id'=>$status->id,
-           'body'=>request('body')
-       ]);
-
-       return CommentResource::make($comment);
+           'likeable_id'=>$comment->id,
+           'likeable_type'=>get_class($comment),
+       ]);*/
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show($id)
     {
         //
     }
@@ -56,10 +53,10 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -67,11 +64,19 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Comment  $comment
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->likes()->where([
+            'user_id' => auth()->id()
+        ])->delete();
+
+        /*==    Like::Where([
+            'user_id' => auth()->id(),
+            'likeable_id' => $comment->id,
+            'likeable_type' => get_class($comment),
+        ])->delete();*/
     }
 }

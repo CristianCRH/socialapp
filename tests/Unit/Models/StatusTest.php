@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Comment;
 use App\Models\Like;
 use Tests\TestCase;
 use App\Models\User;
@@ -10,85 +11,99 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class StatusTest extends TestCase
 {
-    use DatabaseMigrations;
+  use DatabaseMigrations;
   /** @test */
-    public function a_status_belongs_to_a_user()
-    {
-       $status= Status::factory()->create();
+  public function a_status_belongs_to_a_user()
+  {
+    $status = Status::factory()->create();
 
-       $this->assertInstanceOf(User::class,$status->user);
-    }
+    $this->assertInstanceOf(User::class, $status->user);
+  }
 
-    /** @test */
-    public function a_status_has_many_likes(){
-      
-      $status = Status::factory()->create();
 
-      Like::factory()->create(['status_id'=>$status->id]);
+  /** @test */
+  public function a_status_has_many_comments()
+  {
 
-      $this->assertInstanceOf(Like::class,$status->likes->first());
-    }
+    $status = Status::factory()->create();
 
-    /** @test */
-    public function a_status_can_be_liked_and_unlike(){
-      
-      $status = Status::factory()->create();
-      
-      $this->actingAs(User::factory()->create());
+    Comment::factory()->create(['status_id' => $status->id]);
 
-      $status->like();
+    $this->assertInstanceOf(Comment::class, $status->comments->first());
+  }
 
-      $this->assertEquals(1,$status->fresh()->likes->count());
+  /** @test */
+  public function a_status_has_many_likes()
+  {
 
-      $status->unlike();
+    $status = Status::factory()->create();
 
-      $this->assertEquals(0,$status->fresh()->likes->count());
+    Like::factory()->create(['status_id' => $status->id]);
 
-    }
+    $this->assertInstanceOf(Like::class, $status->likes->first());
+  }
 
-    
-    /** @test */
-    public function a_status_can_be_liked_once(){
-      
-      $status = Status::factory()->create();
-      
-      $this->actingAs(User::factory()->create());
+  /** @test */
+  public function a_status_can_be_liked_and_unlike()
+  {
 
-      $status->like();
+    $status = Status::factory()->create();
 
-      $this->assertEquals(1,$status->likes->count());
+    $this->actingAs(User::factory()->create());
 
-      $status->like();
+    $status->like();
 
-      $this->assertEquals(1,$status->fresh()->likes->count());
+    $this->assertEquals(1, $status->fresh()->likes->count());
 
-    }
+    $status->unlike();
 
-    /** @test */
-    public function a_status_knows_if_it_has_been_liked(){
-    
-      $status = Status::factory()->create();
-    
-      $this->assertFalse($status->isLiked());
+    $this->assertEquals(0, $status->fresh()->likes->count());
+  }
 
-      $this->actingAs(User::factory()->create());
 
-      $this->assertFalse($status->isLiked());
+  /** @test */
+  public function a_status_can_be_liked_once()
+  {
 
-      $status->like();
+    $status = Status::factory()->create();
 
-      $this->assertTrue($status->isLiked());
+    $this->actingAs(User::factory()->create());
 
-    }
+    $status->like();
 
-    /** @test */
-    public function a_status_knows_how_many_likes_it_has(){
-      $status = Status::factory()->create();
+    $this->assertEquals(1, $status->likes->count());
 
-      $this->assertEquals(0,$status->likesCount());
+    $status->like();
 
-      Like::factory(2)->create(['status_id'=>$status->id]);
+    $this->assertEquals(1, $status->fresh()->likes->count());
+  }
 
-      $this->assertEquals(2,$status->likesCount());
-    }
+  /** @test */
+  public function a_status_knows_if_it_has_been_liked()
+  {
+
+    $status = Status::factory()->create();
+
+    $this->assertFalse($status->isLiked());
+
+    $this->actingAs(User::factory()->create());
+
+    $this->assertFalse($status->isLiked());
+
+    $status->like();
+
+    $this->assertTrue($status->isLiked());
+  }
+
+  /** @test */
+  public function a_status_knows_how_many_likes_it_has()
+  {
+    $status = Status::factory()->create();
+
+    $this->assertEquals(0, $status->likesCount());
+
+    Like::factory(2)->create(['status_id' => $status->id]);
+
+    $this->assertEquals(2, $status->likesCount());
+  }
 }
