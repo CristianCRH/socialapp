@@ -18,7 +18,11 @@
     <div
       class="card-footer p-2 d-flex justify-content-between align-items-center"
     >
-      <like-btn :status="status"></like-btn>
+      <like-btn
+        :url="`/statuses/${status.id}/likes`"
+        :model="status"
+        dusk="like-btn"
+      ></like-btn>
 
       <div class="mr-2 text-secondary">
         <i class="far fa-thumbs-up"></i>
@@ -28,18 +32,37 @@
 
     <div class="card-footer">
       <div v-for="comment in comments" :key="comment.id" class="mb-3">
-        <img
-          :src="comment.user_avatar"
-          :alt="comment.user_name"
-          width="34"
-          class="rounded shadow-sm float-left mr-2"
-        />
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-2 text-secondary">
-            <a href=""
-              ><strong>{{ comment.user_name }}</strong></a
-            >||
-            {{ comment.body }}
+        <div class="d-flex">
+          <img
+            :src="comment.user_avatar"
+            :alt="comment.user_name"
+            width="34"
+            height="34"
+            class="rounded shadow-sm mr-2"
+          />
+
+          <div class="flex-grow-1">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-2 text-secondary">
+                <a href=""
+                  ><strong>{{ comment.user_name }}</strong></a
+                >||
+                {{ comment.body }}
+              </div>
+            </div>
+            <small
+              class="float-right badge badge-primary badge-pill py-1 pc-2 mt-1"
+              dusk="comment-likes-count"
+              >
+              <i class="fa fa-thumbs-up"></i>
+              {{ comment.likes_count }}
+            </small>
+            <like-btn
+              :url="`/comments/${comment.id}/likes`"
+              :model="comment"
+              dusk="comment-like-btn"
+              class="comments-like-btn"
+            ></like-btn>
           </div>
         </div>
       </div>

@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentLikesController;
+
+
 
 Route::resource('statuses',StatusController::class);
 
@@ -21,9 +24,16 @@ Route::post('statuses/{status}/comments',[CommentController::class,'store'])->na
 Route::post('comments/{comment}/likes',[CommentLikesController::class,'store'])->name('comments.likes.store')->middleware('auth');
 Route::delete('comments/{comment}/likes',[CommentLikesController::class,'destroy'])->name('comments.likes.destroy')->middleware('auth');
 
-//Route::resource('likes',LikeController::class);
+
+/** USERS ROUTES */
+Route::get('/@{user}',[UserController::class,'show'])->name('users.show');
+
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::view('/', 'welcome')->name('start');
 
 Auth::routes();
+
+
+

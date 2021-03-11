@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Like;
 use App\Models\User;
 use App\Models\Comment;
+use App\Traits\HasLikes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CommentTest extends TestCase
@@ -19,16 +20,8 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function a_comment_morp_many_likes()
+    public function a_comment_model_must_use_the_trait_has_likes()
     {
-
-        $comment = Comment::factory()->create();
-
-        Like::factory()->create([
-            'likeable_id' => $comment->id,
-            'likeable_type' => get_class($comment),
-        ]);
-
-        $this->assertInstanceOf(Like::class, $comment->likes->first());
+        $this->assertClassUsesTrait(HasLikes::class,Comment::class);
     }
 }
