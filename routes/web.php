@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\UserController;
@@ -7,6 +8,9 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentLikesController;
 
+Route::get('test', function () {
+ return Auth::user();
+});
 
 
 Route::resource('statuses',StatusController::class);
